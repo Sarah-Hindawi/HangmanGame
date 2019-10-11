@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements MyAsyncTask.commu
 
 
     public void onClick(View v) {
-        String answer=text.getText().toString();
+        String answer = text.getText().toString();
         try {
-            URL url = new URL("https://hangman-api.herokuapp.com/hangman?token="+token+"&letter="+answer);
+            URL url = new URL("https://hangman-api.herokuapp.com/hangman?token=" + token + "&letter=" + answer);
             new SubmitAsyncTask(this).execute(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MyAsyncTask.commu
     }
 
     @Override
+
     public void setResponse(String h, String t, boolean cr) {
         hangman = h;
         token = t;
@@ -63,10 +64,11 @@ public class MainActivity extends AppCompatActivity implements MyAsyncTask.commu
         tv.setText(h);
     }
 
-    public void handleWrongAnswer(){
+    public void handleWrongAnswer() {
         c++;
-        if(c==7) {}
-        ImageView img= (ImageView) findViewById(R.id.iv);
+        if (c == 7) {
+        }
+        ImageView img = (ImageView) findViewById(R.id.iv);
         img.setImageResource(R.drawable.stage1);
         //iv.setImageDrawable("@android:drawable/stage1");
 
