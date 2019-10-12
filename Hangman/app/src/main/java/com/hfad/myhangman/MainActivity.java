@@ -3,7 +3,6 @@ package com.hfad.myhangman;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,12 +11,14 @@ import android.widget.TextView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements MyAsyncTask.communicate, SubmitAsyncTask.communicate,
         AnswerAsyncTask.communicate, HintAsyncTask.communicate {
 
     EditText text;
-    TextView tv;
+    TextView tv, chosen;
     String hangman, token, answer;
     int countWrong;
     ImageView img;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MyAsyncTask.commu
         tv = findViewById(R.id.tv);
         guess = findViewById(R.id.b);
         hint = findViewById(R.id.hint);
+        chosen = findViewById(R.id.chosen);
         tv.setVisibility(View.INVISIBLE);
         setInvisible();
     }
@@ -56,13 +58,25 @@ public class MainActivity extends AppCompatActivity implements MyAsyncTask.commu
 
     public void onClick(View v) {
         answer = text.getText().toString();
-        try {
-            URL url = new URL("https://hangman-api.herokuapp.com/hangman?token=" + token + "&letter=" + answer);
-            new SubmitAsyncTask(this).execute(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        Pattern regex = Pattern.compile("[0-9]");
+        Matcher regexMatcher = regex.matcher(answer);
+        boolean digit=regexMatcher.find();
+        if (!digit && answer.length()==1) {
+            setChosen(answer);
+            try {
+                URL url = new URL("https://hangman-api.herokuapp.com/hangman?token=" + token + "&letter=" + answer);
+                new SubmitAsyncTask(this).execute(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
+    public void setChosen(String letter) {
+        chosen.setText(chosen.getText().toString() + " " + letter);
+    }
+
 
     public void getHint(View v) {
         try {
