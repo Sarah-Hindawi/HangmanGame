@@ -13,20 +13,19 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SubmitAsyncTask extends android.os.AsyncTask<URL, Void, String> {
+public class AnswerAsyncTask extends android.os.AsyncTask<URL, Void, String> {
 
-    WeakReference<SubmitAsyncTask.communicate> d;
-    String hangman, token;
-    boolean correct;
+    WeakReference<AnswerAsyncTask.communicate> d;
+    String answer;
 
-    public SubmitAsyncTask(SubmitAsyncTask.communicate dd) {
+    public AnswerAsyncTask(AnswerAsyncTask.communicate dd) {
         d = new WeakReference<>(dd);
     }
 
     public interface communicate {
 
         //will pass into MainActivity the new String to update the TextView with
-        public void setResponse(String h, String t, boolean correct);
+        public void setResponse(String h);
 
     }
 
@@ -37,7 +36,7 @@ public class SubmitAsyncTask extends android.os.AsyncTask<URL, Void, String> {
         String str = "";
         try {
             HttpURLConnection h = (HttpURLConnection) objects[0].openConnection();
-            h.setRequestMethod("PUT");
+            h.setRequestMethod("GET");
             InputStream is = h.getInputStream();
             BufferedReader b = new BufferedReader(new InputStreamReader(is));
 
@@ -46,7 +45,7 @@ public class SubmitAsyncTask extends android.os.AsyncTask<URL, Void, String> {
             while ((line = b.readLine()) != null) str += line + "\n";
 
 
-            Log.d("pout", str);
+            Log.d("answerhere", str);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,13 +58,10 @@ public class SubmitAsyncTask extends android.os.AsyncTask<URL, Void, String> {
 
         try {
             JSONObject j = new JSONObject(s);
-            hangman = (String) j.get("hangman");
-            token = (String) j.get("token");
-            correct = (boolean) j.get("correct");
-
-            SubmitAsyncTask.communicate a = d.get();
+            answer = (String) j.get("solution");
+            AnswerAsyncTask.communicate a = d.get();
             if (a != null) // if the object died will be null
-                a.setResponse(hangman, token, correct);
+                a.setResponse(answer);
 
         } catch (JSONException e) {
             e.printStackTrace();
