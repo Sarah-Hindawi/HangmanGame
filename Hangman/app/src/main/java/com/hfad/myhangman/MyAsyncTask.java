@@ -45,7 +45,7 @@ public class MyAsyncTask extends android.os.AsyncTask<URL, Void, String> {
             while ((line = b.readLine()) != null) str += line + "\n";
 
 
-            Log.d("sssara", str);
+            Log.d("currentWord", str);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ public class MyAsyncTask extends android.os.AsyncTask<URL, Void, String> {
             token = (String) j.get("token");
 
             MyAsyncTask.communicate a = d.get();
-            if (a != null) // if the object died will be null
+            if (a != null)
                 a.setResponse(hangman, token);
 
         } catch (JSONException e) {
