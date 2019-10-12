@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="createGame"
-        android:text="Start The Game">
+        android:text="@string/start">
 
     </Button>
 
@@ -44,7 +44,7 @@
             android:layout_marginRight="20px"
             android:layout_marginBottom="10dp"
             android:onClick="onClick"
-            android:text="Guess" />
+            android:text="@string/Guess" />
 
         <Button
             android:id="@+id/hint"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="getHint"
-            android:text="Need help?"
+            android:text="@string/hint"
             android:textSize="8sp" />
 
     </LinearLayout>
